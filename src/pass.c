@@ -4,7 +4,8 @@
 #include <stdlib.h>
 #include <sys/types.h>
 
-pass_t generate_pass(char *mem, u_int8_t length) {
+pass_t generate_pass(char *mem, u_int8_t length, bool hasNumbers,
+                     bool hasSymbols) {
 
     const char *letters =
         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -26,16 +27,78 @@ pass_t generate_pass(char *mem, u_int8_t length) {
     }
 
     int pass_length = 0;
+
     do {
         char a = fgetc(file);
-        for (int i = 0; i < 52; i++) {
-            if (a == letters[i]) {
-                *(mem + pass_length) = a;
-                pass_length++;
-                continue;
+        // will only check for letters
+        if (!hasNumbers && !hasSymbols) {
+            for (int i = 0; i < 52; i++) {
+                if (a == letters[i]) {
+                    *(mem + pass_length) = a;
+                    pass_length++;
+                    continue;
+                }
             }
         }
-        
+        // will check for letters,numbers and symbols
+        if (hasNumbers && hasSymbols) {
+            for (int i = 0; i < 52; i++) {
+                if (a == letters[i]) {
+                    *(mem + pass_length) = a;
+                    pass_length++;
+                    continue;
+                }
+            }
+            for (int j = 0; j < 10; j++) {
+                if (a == numbers[j]) {
+                    *(mem + pass_length) = a;
+                    pass_length++;
+                    continue;
+                }
+            }
+            for (int k = 0; k < 11; k++) {
+                if (a == valid_symbols[k]) {
+                    *(mem + pass_length) = a;
+                    pass_length++;
+                    continue;
+                }
+            }
+        }
+        // will only check for letters and numbers
+        if (hasNumbers) {
+            for (int i = 0; i < 52; i++) {
+                if (a == letters[i]) {
+                    *(mem + pass_length) = a;
+                    pass_length++;
+                    continue;
+                }
+            }
+            for (int j = 0; j < 10; j++) {
+                if (a == numbers[j]) {
+                    *(mem + pass_length) = a;
+                    pass_length++;
+                    continue;
+                }
+            }
+        }
+        // will only check for letters and symbols
+        if (hasSymbols) {
+            for (int i = 0; i < 52; i++) {
+                if (a == letters[i]) {
+                    *(mem + pass_length) = a;
+                    pass_length++;
+                    continue;
+                }
+            }
+            for (int j = 0; j < 11; j++) {
+                if (a == valid_symbols[j]) {
+                    *(mem + pass_length) = a;
+                    pass_length++;
+                    continue;
+                }
+            }
+        }
+
     } while (pass_length < length);
 
     pass_t pass;
