@@ -34,7 +34,7 @@ typedef struct {
     pass_t password;
 } pass_manager_t;
 
-pass_t generate_pass(char* mem, u_int8_t length, bool hasNumbers, bool hasSymbols);
+void generate_pass(char* mem, u_int8_t length, bool hasNumbers, bool hasSymbols);
 void load_pass_manager();
 void save_pass_manager();
 void delete_password();

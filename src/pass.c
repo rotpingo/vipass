@@ -4,8 +4,8 @@
 #include <stdlib.h>
 #include <sys/types.h>
 
-pass_t generate_pass(char *mem, u_int8_t length, bool hasNumbers,
-                     bool hasSymbols) {
+void generate_pass(char *mem, u_int8_t length, bool hasNumbers,
+                   bool hasSymbols) {
 
     const char *letters =
         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -28,10 +28,9 @@ pass_t generate_pass(char *mem, u_int8_t length, bool hasNumbers,
 
     int pass_length = 0;
 
-    do {
-        char a = fgetc(file);
-        // will only check for letters
-        if (!hasNumbers && !hasSymbols) {
+    if (!hasNumbers && !hasSymbols) {
+        do {
+            char a = fgetc(file);
             for (int i = 0; i < 52; i++) {
                 if (a == letters[i]) {
                     *(mem + pass_length) = a;
@@ -39,9 +38,14 @@ pass_t generate_pass(char *mem, u_int8_t length, bool hasNumbers,
                     continue;
                 }
             }
-        }
-        // will check for letters,numbers and symbols
-        if (hasNumbers && hasSymbols) {
+        } while (pass_length < length);
+        return;
+    }
+
+    // will check for letters,numbers and symbols
+    if (hasNumbers && hasSymbols) {
+        do {
+            char a = fgetc(file);
             for (int i = 0; i < 52; i++) {
                 if (a == letters[i]) {
                     *(mem + pass_length) = a;
@@ -63,9 +67,14 @@ pass_t generate_pass(char *mem, u_int8_t length, bool hasNumbers,
                     continue;
                 }
             }
-        }
-        // will only check for letters and numbers
-        if (hasNumbers) {
+        } while (pass_length < length);
+        return;
+    }
+
+    // will only check for letters and numbers
+    if (hasNumbers) {
+        do {
+            char a = fgetc(file);
             for (int i = 0; i < 52; i++) {
                 if (a == letters[i]) {
                     *(mem + pass_length) = a;
@@ -80,9 +89,14 @@ pass_t generate_pass(char *mem, u_int8_t length, bool hasNumbers,
                     continue;
                 }
             }
-        }
-        // will only check for letters and symbols
-        if (hasSymbols) {
+        } while (pass_length < length);
+        return;
+    }
+
+    // will only check for letters and symbols
+    if (hasSymbols) {
+        do {
+            char a = fgetc(file);
             for (int i = 0; i < 52; i++) {
                 if (a == letters[i]) {
                     *(mem + pass_length) = a;
@@ -97,15 +111,9 @@ pass_t generate_pass(char *mem, u_int8_t length, bool hasNumbers,
                     continue;
                 }
             }
-        }
-
-    } while (pass_length < length);
-
-    pass_t pass;
-    pass.length = length;
-    // pass.numbers = hasNumbers;
-    // pass.symbols = hasSymbols;
-    return pass;
+        } while (pass_length < length);
+        return;
+    }
 }
 
 void load_pass_manager();
