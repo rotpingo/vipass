@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdbool.h>
+#include <sys/types.h>
 
 /*
  * pass_t is the datatype holding the data about pasword
@@ -33,7 +34,7 @@ typedef struct {
     pass_t password;
 } pass_manager_t;
 
-pass_t generate_password(int length, bool numbers, bool symbols);
+pass_t generate_pass(char* mem, u_int8_t length);
 void load_pass_manager();
 void save_pass_manager();
 void delete_password();
