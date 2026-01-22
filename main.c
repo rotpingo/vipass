@@ -46,7 +46,10 @@ int main(int argc, const char *argv[]) {
 
         if (argv[i][0] == '-') {
 
-            if (strcmp(argv[i], "-n") == 0) {
+            if (strcmp(argv[i], "-h") == 0) {
+                helper();
+                return 0;
+            } else if (strcmp(argv[i], "-n") == 0) {
                 hasNumbers = true;
             } else if (strcmp(argv[i], "-s") == 0) {
                 hasSymbols = true;
