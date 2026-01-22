@@ -91,7 +91,7 @@ int main(int argc, const char *argv[]) {
 
     printf("Generating a password of length %d bytes\n", length);
 
-    char *password = (char *)malloc(length);
+    char *password = (char *)malloc(length+1);
     if (!password) {
         perror("malloc");
         return 1;
